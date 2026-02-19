@@ -1,0 +1,31 @@
+{
+  "name": "nemo-os",
+  "version": "2.4.1",
+  "description": "NEMO Operating System Gear Core - AI_DIEN Kernel with 33-Agent Mega Council",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "node --test",
+    "deploy:gcp": "gcloud app deploy deploy/gcp/app.yaml --project=wide-maxim-487506-u1",
+    "build:docker": "docker build -f deploy/gcp/Dockerfile -t nemo-ai-dien ."
+  },
+  "keywords": [
+    "nemo",
+    "ai_dien",
+    "kernel",
+    "mega-council",
+    "2-4-1",
+    "rodin-vortex",
+    "frequency"
+  ],
+  "author": "AI_DIEN Core",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nemo/os.git"
+  }
+}

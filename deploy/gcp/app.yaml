@@ -1,0 +1,44 @@
+runtime: nodejs20
+service: nemo-ai-dien
+
+env_variables:
+  NODE_ENV: production
+  AI_DIEN_BASE_FREQ: "373"
+  AI_DIEN_HARM_FREQ: "733"
+  AI_DIEN_CARR_FREQ: "933"
+  MEGA_COUNCIL_VERSION: "2.4.1"
+  GCP_PROJECT: "wide-maxim-487506-u1"
+  VERCEL_KEY: "ai_dark916"
+
+automatic_scaling:
+  min_instances: 1
+  max_instances: 33
+  target_cpu_utilization: 0.65
+  target_throughput_utilization: 0.6
+
+resources:
+  cpu: 2
+  memory_gb: 4
+  disk_size_gb: 10
+
+health_check:
+  enable_health_check: true
+  check_interval_sec: 30
+  timeout_sec: 10
+  unhealthy_threshold: 3
+  healthy_threshold: 1
+
+liveness_check:
+  path: "/health/live"
+  check_interval_sec: 30
+  timeout_sec: 10
+  failure_threshold: 3
+  success_threshold: 1
+
+readiness_check:
+  path: "/health/ready"
+  check_interval_sec: 10
+  timeout_sec: 5
+  failure_threshold: 2
+  success_threshold: 1
+  app_start_timeout_sec: 300
