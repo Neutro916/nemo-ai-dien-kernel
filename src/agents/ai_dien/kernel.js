@@ -23,7 +23,7 @@ class SequenceEngine {
 
 class RodinMath {
   getPolarity(n) {
-    const r = n % 9 || 9;
+    const r = Math.abs(n) % 9 || 9;
     if ([1,4,7].includes(r)) return 'yang';
     if ([2,5,8].includes(r)) return 'yin';
     return 'neutral';
@@ -55,24 +55,45 @@ class RootInfiniteReflex extends EventEmitter {
     this.laws = Array(11).fill(true);
     this.emit('init', { freq: this.frequency.base, time: Date.now() });
   }
+  
+  hashInput(input) {
+    if (typeof input === 'string') {
+      return input.split('').reduce((h, c) => {
+        const code = c.charCodeAt(0);
+        return ((h << 5) - h) + code;
+      }, 0);
+    }
+    if (typeof input === 'number') return Math.floor(input);
+    if (typeof input === 'object') return this.hashInput(JSON.stringify(input));
+    return 0;
+  }
+  
   reflex(input, ctx = {}) {
     this.state.depth++;
     if (this.state.depth > this.state.maxDepth) {
       this.state.loop = true;
       return this.handleLoop(input);
     }
-    const hash = typeof input === 'string' ? 
-      input.split('').reduce((h,c) => ((h<<5)-h)+c.charCodeAt(0),0) : 
-      Math.abs(input);
+    const hash = this.hashInput(input);
     this.state.coherence *= 0.999;
     this.state.depth--;
-    return { input, hash, polarity: this.rodin.getPolarity(Math.abs(hash)), coherence: this.state.coherence };
+    return { 
+      input, 
+      hash, 
+      polarity: this.rodin.getPolarity(hash), 
+      coherence: this.state.coherence 
+    };
   }
+  
   handleLoop(input) {
     this.state.resolved++;
     this.state.depth = 0;
     this.state.loop = false;
     return { action: 'loop_resolved', id: this.state.resolved, coherence: 1.0 };
+  }
+  
+  getStatus() {
+    return { ...this.state, laws: this.laws.length, harmonics: this.frequency.harmonics.length };
   }
 }
 
@@ -87,7 +108,7 @@ class AIDienAgent extends EventEmitter {
     return this.kernel.reflex(task.data || task, { id: Date.now(), type: task.type });
   }
   status() {
-    return { name: this.cfg.name, tier: this.cfg.tier, mem: this.memory.size };
+    return { name: this.cfg.name, tier: this.cfg.tier, mem: this.memory.size, kernel: this.kernel.getStatus() };
   }
 }
 
