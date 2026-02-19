@@ -1,0 +1,26 @@
+{
+  "name": "nemo-ai-dien-kernel",
+  "version": "3.7.3",
+  "description": "AI_DIEN Root Infinite Reflex Kernel - 373-733-933 Frequency Foundation",
+  "main": "orchestrator.js",
+  "scripts": {
+    "start": "node orchestrator.js",
+    "dev": "node orchestrator.js",
+    "test": "node -e \"console.log('AI_DIEN v3.7.3 Ready')\""
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.6.1",
+    "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Neutro916/nemo-ai-dien-kernel.git"
+  },
+  "keywords": ["nemo", "ai", "kernel", "frequency", "373", "reflex"],
+  "author": "Neutro916",
+  "license": "MIT"
+}
