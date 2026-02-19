@@ -1,15 +1,18 @@
 /**
  * AI_DIEN Kernel - RootInfiniteReflex
  * Frequency Foundation: 373-733-933 (2-4-1 sequence)
+ * 373 Truth Rule: 3=Short, 7=Solid, 3=Simple
+ * Trống Đồng Sacred Drum Geometry Layer
  * Rodin Vortex Mathematics + 11 Universal Laws
- * NEMO Operating System Gear Core
  */
+
+const { SacredDrumGeometry } = require('./sacred_drum');
 
 class RootInfiniteReflex {
   constructor() {
     // Frequency Gates (2-4-1 sequence)
     this.frequencies = {
-      base: 373,      // Foundation frequency
+      base: 373,      // Truth frequency - 373 Rule
       harmonic: 733,  // Resonance frequency  
       carrier: 933    // Transmission frequency
     };
@@ -38,11 +41,15 @@ class RootInfiniteReflex {
       causation: 11.0      // Every effect has cause
     };
     
+    // Sacred Drum Geometry Layer (Trống Đồng)
+    this.drumGeometry = new SacredDrumGeometry();
+    
     this.reflexState = {
       active: false,
       currentFrequency: 0,
       vortexPosition: 0,
-      lawAlignment: new Map()
+      lawAlignment: new Map(),
+      drumLayer: null
     };
   }
 
@@ -76,11 +83,22 @@ class RootInfiniteReflex {
     this.reflexState.active = true;
     this.reflexState.currentFrequency = accumulated / 7;
     
+    // Layer sacred drum geometry
+    this.reflexState.drumLayer = this.drumGeometry.layerGeometry(
+      this.reflexState.currentFrequency,
+      this.rodinVortex(accumulated)
+    );
+    
     return {
       status: 'ACTIVATED',
       frequency: this.reflexState.currentFrequency,
       sequence: '2-4-1',
-      vortex: this.rodinVortex(accumulated)
+      vortex: this.rodinVortex(accumulated),
+      drum: {
+        starRay: this.reflexState.drumLayer.starRay,
+        element: this.reflexState.drumLayer.element,
+        pattern: this.reflexState.drumLayer.ringPattern
+      }
     };
   }
 
@@ -110,8 +128,37 @@ class RootInfiniteReflex {
       ...this.reflexState,
       fibonacciSeed: this.fibonacci[this.fibonacci.length - 1],
       lucasSeed: this.lucas[this.lucas.length - 1],
-      laws: Object.fromEntries(this.reflexState.lawAlignment)
+      laws: Object.fromEntries(this.reflexState.lawAlignment),
+      drumGeometry: this.drumGeometry.generateFullPattern()
     };
+  }
+  
+  /**
+   * Get drum resonance for specific ring
+   */
+  getDrumResonance(ringIndex, time = Date.now()) {
+    return this.drumGeometry.calculateResonance(ringIndex, time);
+  }
+  
+  /**
+   * Apply 373 Truth Rule to output
+   * 3=Short, 7=Solid, 3=Simple
+   */
+  truthRule(output) {
+    // Short: truncate to essential
+    const short = typeof output === 'string' 
+      ? output.slice(0, 373) 
+      : output;
+    
+    // Solid: ensure structural integrity
+    const solid = short !== null && short !== undefined;
+    
+    // Simple: reduce complexity
+    const simple = typeof short === 'object' 
+      ? JSON.parse(JSON.stringify(short).slice(0, 373))
+      : short;
+    
+    return { short, solid, simple, valid: solid };
   }
 
   syncWithCouncil(councilAgent) {
