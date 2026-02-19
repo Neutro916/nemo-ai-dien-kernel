@@ -1,46 +1,44 @@
 /**
- * CONDUIT-UI CONNECTOR
+ * Conduit-UI Connector
  * Bridges AI_DIEN kernel to Conduit-UI frontend
  */
 
-const io = require('socket.io-client');
 const { AIDienAgent } = require('./src/agents/ai_dien/kernel');
+const { MegaCouncil } = require('./src/agents/mega_council');
 
 class ConduitConnector {
-  constructor(config = {}) {
-    this.conduitUrl = config.conduitUrl || 'http://localhost:3000';
+  constructor(io) {
+    this.io = io;
     this.agent = new AIDienAgent({ tier: 737 });
-    this.socket = null;
+    this.council = new MegaCouncil();
+    this.setupHandlers();
   }
 
-  connect() {
-    this.socket = io(this.conduitUrl);
-    
-    this.socket.on('connect', () => {
-      console.log('✓ Connected to Conduit-UI');
-      this.socket.emit('ai_dien:register', { tier: 737, status: 'active' });
-    });
+  setupHandlers() {
+    this.io.on('connection', (socket) => {
+      console.log('Conduit-UI connected:', socket.id);
+      
+      socket.emit('ai_dien:status', this.agent.status());
+      socket.emit('council:status', this.council.getStatus());
 
-    this.socket.on('conduit:command', async (cmd) => {
-      console.log('Command received:', cmd);
-      const result = await this.agent.process(cmd);
-      this.socket.emit('ai_dien:response', result);
-    });
+      socket.on('ai_dien:process', (task) => {
+        const result = this.agent.process(task);
+        socket.emit('ai_dien:result', result);
+      });
 
-    this.socket.on('disconnect', () => {
-      console.log('✗ Disconnected from Conduit-UI');
-    });
-  }
+      socket.on('council:activate', (data) => {
+        this.council.activateAgent(data.agentId, data.task);
+        socket.emit('council:updated', this.council.getStatus());
+      });
 
-  disconnect() {
-    if (this.socket) this.socket.disconnect();
+      socket.on('gordon:execute', async (data) => {
+        const result = await this.council.executeGordon(
+          data.capture, data.analysis, data.action
+        );
+        socket.emit('gordon:result', result);
+      });
+    });
   }
 }
 
 module.exports = { ConduitConnector };
-
-// CLI
-if (require.main === module) {
-  const connector = new ConduitConnector();
-  connector.connect();
-}
