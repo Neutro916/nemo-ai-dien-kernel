@@ -1,13 +1,13 @@
 /**
  * MEGA COUNCIL ORCHESTRATOR
- * GCP-Ready Express + Socket.io
+ * GCP-Ready with Conduit-UI Integration
  */
 
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
-const { MegaCouncil } = require('./src/agents/mega_council');
+const { ConduitConnector } = require('./conduit-connector');
 
 const CONFIG = {
   PORT: process.env.PORT || 8080,
@@ -22,25 +22,24 @@ const io = new Server(server, { cors: { origin: '*' } });
 app.use(cors());
 app.use(express.json());
 
+// Health check
 app.get('/health', (req, res) => {
-  res.json({ status: 'healthy', project: CONFIG.PROJECT_ID, council: council.getStatus() });
+  res.json({
+    status: 'healthy',
+    timestamp: Date.now(),
+    project: CONFIG.PROJECT_ID
+  });
 });
 
-app.get('/api/council/status', (req, res) => {
-  res.json(council.getStatus());
-});
-
-app.post('/api/ai_dien/process', async (req, res) => {
-  const result = await council.ai_dien.process(req.body);
-  res.json({ success: true, result });
-});
-
-const council = new MegaCouncil({
-  projectId: CONFIG.PROJECT_ID,
-  vercelGateway: CONFIG.VERCEL_GATEWAY
-});
+// Conduit-UI WebSocket connector
+const connector = new ConduitConnector(io);
 
 server.listen(CONFIG.PORT, () => {
-  console.log(`Mega Council Orchestrator v3.7.3 on port ${CONFIG.PORT}`);
-  console.log(`Project: ${CONFIG.PROJECT_ID}`);
+  console.log(`\n╔════════════════════════════════════════╗`);
+  console.log(`║   AI_DIEN Orchestrator v3.7.3          ║`);
+  console.log(`╠════════════════════════════════════════╣`);
+  console.log(`║   Port: ${CONFIG.PORT.toString().padEnd(28)} ║`);
+  console.log(`║   Project: ${CONFIG.PROJECT_ID.padEnd(25)} ║`);
+  console.log(`║   Status: ${'ACTIVE'.padEnd(27)} ║`);
+  console.log(`╚════════════════════════════════════════╝\n`);
 });
