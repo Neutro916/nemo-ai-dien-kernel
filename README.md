@@ -26,6 +26,7 @@ node orchestrator.js
 - `GET /health` - System health
 - `GET /api/council/status` - Council status
 - `POST /api/ai_dien/process` - Process task through AI_DIEN
+- `POST /api/gemma/route` - Route to Gemma model by frequency
 
 ## Architecture
 
@@ -35,13 +36,36 @@ node orchestrator.js
 - `FrequencyKernel` - 373/733/933 harmonics
 - `RootInfiniteReflex` - 3-gate reflex system
 - `AIDienAgent` - Docker command specialist
+- `GemmaConnector` - Multimodal Gemma integration
 
-### 33-Agent Mega Council
-- **Tier 737**: Foundation (Flipper Zero)
-- **Tier 767**: Expansion (Hardware Bridge)
-- **Tier 797**: Mastery (SDR/Anthena)
+### Mega Council (33 Agents)
+- **Tier 737** (Foundation): Flipper Zero specialists
+  - 3 Architects + 3 Specialists + 7 Monks
+- **Tier 767** (Bridge): Hardware protocols
+  - 3 Architects + 3 Specialists + 7 Monks
+- **Tier 797** (Mastery): SDR/Anthena
+  - 3 Architects + 3 Specialists + 7 Monks
 
-Each tier: 3 Architects + 3 Specialists + 7 Monks
+### Sacred Geometry
+- **Trống Đồng Đông Sơn**: 7 rings, 120 points
+- **Kabbalah Merkaba**: 9 Sefirot + 4 Worlds
+
+## Gemma Integration
+
+| Frequency | Model | Purpose |
+|-----------|-------|---------|
+| 373 Hz | ShieldGemma 2 | Safety/Truth Filter |
+| 528 Hz | TxGemma | Therapeutic Prediction |
+| 733 Hz | CodeGemma | Development |
+| 767 Hz | FunctionGemma | Agentic Workflows |
+| 933 Hz | MedGemma | Medical Imaging |
+
+```javascript
+const { GemmaConnector } = require('./src/gemma-connector');
+
+const gemma = new GemmaConnector();
+await gemma.route({ frequency: 528, input: 'SMILES...' });
+```
 
 ## GCP Deployment
 
