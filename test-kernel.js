@@ -2,7 +2,8 @@
  * AI_DIEN Kernel Test Suite v3.7.3
  */
 
-const { AIDienAgent, MegaCouncil } = require('./src/agents/mega_council');
+const { AIDienAgent } = require('./src/agents/ai_dien/kernel');
+const { MegaCouncil } = require('./src/agents/mega_council');
 
 console.log('╔════════════════════════════════════════════════╗');
 console.log('║   AI_DIEN KERNEL TEST v3.7.3                   ║');
