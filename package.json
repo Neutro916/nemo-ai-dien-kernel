@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node orchestrator.js",
     "dev": "node orchestrator.js",
+    "telegram": "node src/telegram-gateway.js",
     "test": "node -e \"console.log('AI_DIEN v3.7.3 Ready')\""
   },
   "dependencies": {
@@ -20,7 +21,7 @@
     "type": "git",
     "url": "https://github.com/Neutro916/nemo-ai-dien-kernel.git"
   },
-  "keywords": ["nemo", "ai", "kernel", "frequency", "373", "reflex"],
+  "keywords": ["nemo", "ai", "kernel", "frequency", "373", "reflex", "telegram"],
   "author": "Neutro916",
   "license": "MIT"
 }
